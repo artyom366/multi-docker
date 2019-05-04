@@ -27,3 +27,5 @@ after_success:
   - docker push artyom366/multi-nginx
   - docker push artyom366/multi-server
   - docker push artyom366/multi-worker
+
+  #trigger build
