@@ -1,0 +1,29 @@
+sudo: required
+
+language: node_js
+node_js:
+  - "8.11.4"
+
+services: 
+  -docker
+
+before_install:
+  - docker build -t artyom366/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run artyom366/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t artyom366/multi-client ./client
+  - docker build -t artyom366/multi-nginx ./nginx
+  - docker build -t artyom366/multi-server ./server
+  - docker build -t artyom366/multi-worker ./worker
+  
+  #login to dicker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  #push the images to docker hub
+  - docker push artyom366/multi-client
+  - docker push artyom366/multi-nginx
+  - docker push artyom366/multi-server
+  - docker push artyom366/multi-worker
