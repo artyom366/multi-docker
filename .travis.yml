@@ -7,8 +7,8 @@ services:
 before_install:
   - docker build -t artyom366/react-test -f ./client/Dockerfile.dev ./client
 script:
-#  - docker run artyom366/react-test npm test -- --coverage
-#after_script:
+  - docker run artyom366/react-test npm run test-coverage
+after_script:
   - docker build -t artyom366/multi-client ./client
   - docker build -t artyom366/multi-nginx ./nginx
   - docker build -t artyom366/multi-server ./server
